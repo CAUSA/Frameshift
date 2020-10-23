@@ -103,7 +103,7 @@ public class CodonUsage{
 					
 					codon=base1+base2+base3;
 					
-					AA1=FrameshiftCodon.translate(codon);
+					AA1=CodonUsage.translate(codon);
 					NoCodon++;
 					codons[NoCodon]=codon;
 					//System.out.println("Codon"+String.valueOf(NoCodon)+": "+ codon+": "+AA1 +"-->");
@@ -124,7 +124,7 @@ public class CodonUsage{
 						codon=codon+rec_char1[i];
 						if(codon.length() ==3){
 							codon1=codon.toUpperCase();
-							//amino=FrameshiftAlign.translate(codon1);							
+							//amino=CodonUsage.translate(codon1);							
 							//out.write(amino);
 							for (int c=1;c<=64;c++){
 								if (codon1.equals(codons[c])){occurrence[c]++;}
