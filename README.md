@@ -22,7 +22,7 @@ Program AlternativeCodes.java is used to produce alternative codon tables.
 
 The sum of FSSs for each of the random or compatible genetic codes was computed and sorted ascendingly and compared with that of the natural genetic code. 
 
-####5	Computational analysis of the usage of codon and codon pairs and their frameshift substitution scores
+#### 5	Computational analysis of the usage of codon and codon pairs and their frameshift substitution scores
 
 Program CodonUsage.java and CODONPAIR.java was used to compute the usages of codons and codon pairs for the genomes, and their average amino acid substitution scores. 
 
@@ -32,11 +32,9 @@ The result of these calculations is a list of 4096 codon pairs with their corres
 
 Please cite the following one or two articles if you use this code:
 
-[1] Frameshifts and wild-type protein sequences are always highly similar because the genetic code is optimal for frameshift tolerance
-Xiaolong Wang, Quanjiang Dong, Gang Chen, Jianye Zhang, Yongqiang Liu, Yujia Cai
+[1] X. Wang, et al, Frameshifts and wild-type protein sequences are always highly similar because the genetic code is optimal for frameshift tolerance
 bioRxiv 067736; doi: https://doi.org/10.1101/067736
 
-[2] A frameshift mutation is repaired through nonsense-mediated gene revising in E. coli
-Xiaolong Wang, Xuxiang Wang, Chunyan Li, Haibo Peng, Yalei Wang, Gang Chen, Jianye Zhang
+[2] X. Wang, et al, A frameshift mutation is repaired through nonsense-mediated gene revising in E. coli
 bioRxiv 069971; doi: https://doi.org/10.1101/069971
 
