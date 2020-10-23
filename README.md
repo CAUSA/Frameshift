@@ -38,9 +38,9 @@ The result of these calculations is a list of 4096 codon pairs with their corres
 
 Please cite the following articles if you use these programs:
 
-[1] Wang, X., et al., The shiftability of protein-coding genes: the genetic code was optimized for frameshift tolerating. January 23, 2015, PeerJ PrePrints 
+[1] Wang X, Wang X, Chen G, Zhang J, Liu Y, Yang C. 2015. The shiftability of protein coding genes: the genetic code was optimized for frameshift tolerating. PeerJ PrePrints 3:e806v1 https://doi.org/10.7287/peerj.preprints.806v1
 
-[2] Wang, X., et al., Frameshifts and wild-type protein sequences are always highly similar because the genetic code is optimal for frameshift tolerance
+[2] X. Wang et al., Frameshifts and wild-type protein sequences are always highly similar because the genetic code is optimal for frameshift tolerance
 bioRxiv 067736; doi: https://doi.org/10.1101/067736
 
 [3] Freeland, S.J. and L.D. Hurst, The genetic code is one in a million. J Mol Evol, 1998. 47(3): p. 238-48.
