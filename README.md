@@ -1,4 +1,4 @@
-### Frameshift substitutions and the frameshift tolerability of the genetic code and the protein coding genes
+### Frameshift substitutions and the frameshift tolerability of the genetic code and the protein-coding genes
 
 #### 1	Protein and coding DNA sequences 
 
@@ -16,21 +16,21 @@ Each internal nonsense codon was translated into an amino acid according to the 
 
 #### 3 Computational analysis of frameshift codon substitutions
 
-Program Frameshift-CODON.java computes the average substitution scores for each kind of codon substitution by using a scoring matrix, BLOSSUM62, PAM250, or GON250. 
+Program Frameshift-CODON.java computes the average substitution scores for each kind of codon substitution using a scoring matrix, BLOSSUM62, PAM250, or GON250. 
 
 #### 4	Computational analysis of alternative codon tables
 
 Program RandomCodes.java produces random codon tables by changing AAs assigned to the sense codons and keeping all degenerative codons synonymous (Freeland and Hurst [3]). 
 
-Program AlternativeCodes.java produces all (13824) alternative codon tables by permuting the nucleotide in each codon position independently (Itzkovitz and Alon [4])..
+Program AlternativeCodes.java produces all (13824) alternative codon tables by permuting the nucleotide in each codon position independently (Itzkovitz and Alon [4]).
 
-The sum of FSSs for each of the random or compatible genetic codes was computed and sorted ascendingly and compared with that of the natural genetic code. 
+The sum of FSSs for each of the random or compatible genetic codes was computed, sorted ascendingly and compared with the natural genetic code. 
 
 #### 5	Computational analysis of the usage of codon and codon pairs and their frameshift substitution scores
 
-Program CodonUsage.java compute the usages of codons in the genomes; 
+Program CodonUsage.java computes the usages of codons in the genomes; 
 
-Program CODONPAIR.java compute the usages of codon pairs in the genomes, and their average FSSs. 
+Program CODONPAIR.java computes the usages of codon pairs in the genomes and their average FSSs. 
 
 The codons/codon pairs whose observed value is greater/smaller than their expected value were identified as over-/under-represented, and their weighted average FSSs were calculated for each genome.
 
@@ -38,9 +38,9 @@ The result of these calculations is a list of 4096 codon pairs with their corres
 
 Please cite the following articles if you use these programs:
 
-[1] Wang  , X., et al., The shiftability of protein coding genes: the genetic code was optimized for frameshift tolerating  . January 23, 2015, PeerJ PrePrints 
+[1] Wang, X., et al., The shiftability of protein-coding genes: the genetic code was optimized for frameshift tolerating. January 23, 2015, PeerJ PrePrints 
 
-[2] X. Wang, et al, Frameshifts and wild-type protein sequences are always highly similar because the genetic code is optimal for frameshift tolerance
+[2] Wang, X., et al., Frameshifts and wild-type protein sequences are always highly similar because the genetic code is optimal for frameshift tolerance
 bioRxiv 067736; doi: https://doi.org/10.1101/067736
 
 [3] Freeland, S.J. and L.D. Hurst, The genetic code is one in a million. J Mol Evol, 1998. 47(3): p. 238-48.
