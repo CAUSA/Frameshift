@@ -1,8 +1,24 @@
+/*
+==============================================================
+CODONPAIR - java version 2.0.001 
+=============================================================
+*/
+
 public class RandomCodes{
 
 	public static void main(String[] args) 
 	{
 	try{
+		System.out.println(" Codon and Codon Pair Usage \n Usage: CODONPAIR <Input File Name of protein coding DNA sequences (in fasta format)>>\n"); 
+		System.out.println("\n Usage: RandomCodes <n> <1/2/3>"); 
+		System.out.println("\n  n is the number of random codes: n=1~1000000;"); 
+		System.out.println("\n The 2nd parameter is the scoring matrix: 1=GON250; 2=BLOSSUM62; 3=PAM250"); 
+		System.out.println();
+	   
+		Translation Trobj=new Translation();
+		
+	   //accept args 
+
 		int NumCodes=Integer.parseInt(args[0]); 
 		int s=Integer.parseInt(args[1]);
 		if (NumCodes>1000000||NumCodes<1||s>3||s<1)
@@ -99,7 +115,7 @@ public class RandomCodes{
 
 		for(int i=0;i<NumCodes+1;i++)
 		{
-		long y=2432901008L;		
+			long y=2432901008L;		
 			long x=(long)(Math.random()*y);
 			x=x+y*i;
 				//System.out.println(x);
@@ -145,18 +161,23 @@ public class RandomCodes{
 					code[18]='V';
 					code[19]='K';
 					}
-				char a[]=new char[3];
-			for(int i1=0;i1<4;i1++){
+			char a[]=new char[3];
+			int Score;
+			
+			for(int i1=0;i1<4;i1++)
+			{
 				if(i1==0){a[0]='A';}
 				if(i1==1){a[0]='T';}
 				if(i1==2){a[0]='C';}
 				if(i1==3){a[0]='G';}
-				for(int i2=0;i2<4;i2++){
+				for(int i2=0;i2<4;i2++)
+				{
 					if(i2==0){a[1]='A';}
 					if(i2==1){a[1]='T';}
 					if(i2==2){a[1]='C';}
 					if(i2==3){a[1]='G';}
-					for(int i3=0;i3<4;i3++){
+					for(int i3=0;i3<4;i3++)
+					{
 						if(i3==0){a[2]='A';}
 						if(i3==1){a[2]='T';}
 						if(i3==2){a[2]='C';}
@@ -173,20 +194,22 @@ public class RandomCodes{
 							if(i4==3){b[0]='G';}
 							String codon1=String.valueOf(a);
 							String codon2=String.valueOf(b);
-							//System.out.print(codon1+' '+Translate(codon1,code)+'|');							
-							//System.out.println(codon2+' '+Translate(codon2,code));
-							int Score;
-							if(MatrixIndex(Translate(codon1,code),s)=='*'||MatrixIndex(Translate(codon2,code),s)=='*')
-									{
+							char AA1=TranslateByRandomGeneticCodes(codon1,code);
+							char AA2=TranslateByRandomGeneticCodes(codon2,code);
+							
+							//System.out.print(codon1+' '+AA1+'|'+codon2+' '+AA2);
+							if(MatrixIndex(AA1,s)=='*'||MatrixIndex(AA2,s)=='*')
+							{
 								Score=0;
-									}
+							}
 							else
 							{
-								Score=ScoringMatrix[MatrixIndex(Translate(codon1,code),s)][MatrixIndex(Translate(codon2,code),s)];
+								Score=ScoringMatrix[MatrixIndex(AA1,s)][MatrixIndex(AA2,s)];
 							}
 							CodeScores[i]=CodeScores[i]+Score;
 							//System.out.println(Score);
 						}
+						
 						char c[]=new char[3];
 						c[0]=a[1];
 						c[1]=a[2];
@@ -198,29 +221,31 @@ public class RandomCodes{
 							if(i5==3){c[2]='G';}
 							String codon1=String.valueOf(a);
 							String codon2=String.valueOf(c);
-							//System.out.print(codon1+' '+Translate(codon1,code)+'|');							
-							//System.out.println(codon2+' '+Translate(codon2,code));
-							int Score1;
-							if(MatrixIndex(Translate(codon1,code),s)=='*'||MatrixIndex(Translate(codon2,code),s)=='*')
-									{
-								Score1=0;
-									}
+							char AA1=TranslateByRandomGeneticCodes(codon1,code);
+							char AA2=TranslateByRandomGeneticCodes(codon2,code);
+							
+							//System.out.print(codon1+' '+AA1+'|'+codon2+' '+AA2);
+							if(MatrixIndex(AA1,s)=='*'||MatrixIndex(AA2,s)=='*')
+							{
+								Score=0;
+							}
 							else
 							{
-								Score1=ScoringMatrix[MatrixIndex(Translate(codon1,code),s)][MatrixIndex(Translate(codon2,code),s)];
+								Score=ScoringMatrix[MatrixIndex(AA1,s)][MatrixIndex(AA2,s)];
 							}
-							//System.out.println(Score1);
-							CodeScores[i]=CodeScores[i]+Score1;
+							CodeScores[i]=CodeScores[i]+Score;
+							//System.out.println(Score);
 						}
 								
-				}
+					}
 				}
 			}
 			//System.out.print(i+1+":");
 			//System.out.println(CodeScores[i]);
 		}
-	System.out.println("\n\nTotal Number of Code: "+String.valueOf(NumCodes)+"\r\n");
-	int ScoreNaturalCode=CodeScores[NumCodes];
+		
+		System.out.println("\n\nTotal Number of Code: "+String.valueOf(NumCodes)+"\r\n");
+		int ScoreNaturalCode=CodeScores[NumCodes];
 		System.out.println("All FSS Scores: ");
 		
 		for(int g=0;g<NumCodes;g++){
@@ -242,7 +267,6 @@ public class RandomCodes{
 				}
 			}
 		}
-		
 
 		System.out.println(" ");
 		System.out.println("Sorted FSS Scores: ");
@@ -266,22 +290,103 @@ public class RandomCodes{
 				break;
 			}
 		}
-	}catch(Exception e)
+	}
+	catch(Exception e)
 	{
-			System.out.println("\nWrong: Usage: RandomCodes <n> <1/2/3>"); 
-			System.out.println("\n  The 1st parameter is the number of random codes: n=1~1000000;"); 
-			System.out.println("\n The 2nd parameter is the scoring matrix: 1=GON250; 2=BLOSSUM62; 3=PAM250"); 
-			System.out.println();
-			System.out.println(e);
-			e.printStackTrace();
+		System.out.println(e);
+		e.printStackTrace();
 	}	
 }
-
+	
+	public static int MatrixIndex(char a,int s)
+	{   int c;
+	if (s==1){ //GON250
+		switch(a)
+		{
+			case 'A':c=0;break;
+			case 'C':c=1;break;
+			case 'D':c=2;break;
+			case 'E':c=3;break;
+			case 'F':c=4;break;
+			case 'G':c=5;break;
+			case 'H':c=6;break;
+			case 'I':c=7;break;
+			case 'K':c=8;break;
+			case 'L':c=9;break;
+			case 'M':c=10;break;
+			case 'N':c=11;break;
+			case 'P':c=12;break;
+			case 'Q':c=13;break;
+			case 'R':c=14;break;
+			case 'S':c=15;break;
+			case 'T':c=16;break;
+			case 'V':c=17;break;
+			case 'W':c=18;break;
+			case 'Y':c=19;break;
+			default:c=a;
+		}		
 		
-	public static char Translate(String codon,char b[])
+	} else {
+		switch(a)
+			{
+				case 'C':c=0;break;
+				case 'S':c=1;break;
+				case 'T':c=2;break;
+				case 'P':c=3;break;
+				case 'A':c=4;break;
+				case 'G':c=5;break;
+				case 'N':c=6;break;
+				case 'D':c=7;break;
+				case 'E':c=8;break;
+				case 'Q':c=9;break;
+				case 'H':c=10;break;
+				case 'R':c=11;break;
+				case 'K':c=12;break;
+				case 'M':c=13;break;
+				case 'I':c=14;break;
+				case 'L':c=15;break;
+				case 'V':c=16;break;
+				case 'F':c=17;break;
+				case 'Y':c=18;break;
+				case 'W':c=19;break;
+				default:c=a;
+			}
+		}
+		return c; 	
+	}
+
+       
+    public static void qs(int[]arr,int left,int right){  
+        if(left>=right){  
+            return;  
+        }  
+        int temp=arr[left];  
+        int i=left;  
+        int j=right;  
+        while(i!=j){  
+            while(arr[j]>=temp&&i<j){  
+                --j;  
+            }  
+            while(arr[i]<=temp&&i<j){  
+                ++i;  
+            }  
+            if(i<j){  
+                int t=arr[i];  
+                arr[i]=arr[j];  
+                arr[j]=t;  
+            }  
+        }  
+        arr[left]=arr[i];  
+        arr[i]=temp;  
+        qs(arr,left,i-1);  
+        qs(arr,j+1,right);  
+    } 
+		
+	public static char TranslateByRandomGeneticCodes(String codon,char b[])
 	 {
 		char amino='0';
-		if(codon.length() ==3){
+		if(codon.length() ==3)
+		{
 			
 			String codon1=codon.toUpperCase();
 			
@@ -472,95 +577,21 @@ public class RandomCodes{
 				amino=b[19];
 			}
 		}
-		
-
-	return amino;
-	 }
-	
-	public static int MatrixIndex(char a,int s)
-	{   int c;
-	if (s==1){ //GON250
-		switch(a)
-		{
-			case 'A':c=0;break;
-			case 'C':c=1;break;
-			case 'D':c=2;break;
-			case 'E':c=3;break;
-			case 'F':c=4;break;
-			case 'G':c=5;break;
-			case 'H':c=6;break;
-			case 'I':c=7;break;
-			case 'K':c=8;break;
-			case 'L':c=9;break;
-			case 'M':c=10;break;
-			case 'N':c=11;break;
-			case 'P':c=12;break;
-			case 'Q':c=13;break;
-			case 'R':c=14;break;
-			case 'S':c=15;break;
-			case 'T':c=16;break;
-			case 'V':c=17;break;
-			case 'W':c=18;break;
-			case 'Y':c=19;break;
-			default:c=a;
-		}		
-		
-	} else {
-		switch(a)
-			{
-				case 'C':c=0;break;
-				case 'S':c=1;break;
-				case 'T':c=2;break;
-				case 'P':c=3;break;
-				case 'A':c=4;break;
-				case 'G':c=5;break;
-				case 'N':c=6;break;
-				case 'D':c=7;break;
-				case 'E':c=8;break;
-				case 'Q':c=9;break;
-				case 'H':c=10;break;
-				case 'R':c=11;break;
-				case 'K':c=12;break;
-				case 'M':c=13;break;
-				case 'I':c=14;break;
-				case 'L':c=15;break;
-				case 'V':c=16;break;
-				case 'F':c=17;break;
-				case 'Y':c=18;break;
-				case 'W':c=19;break;
-				default:c=a;
-			}
-		}
-		return c; 	
+		return amino;
 	}
-
-       
-    public static void qs(int[]arr,int left,int right){  
-        if(left>=right){  
-            return;  
-        }  
-        int temp=arr[left];  
-        int i=left;  
-        int j=right;  
-        while(i!=j){  
-            while(arr[j]>=temp&&i<j){  
-                --j;  
-            }  
-            while(arr[i]<=temp&&i<j){  
-                ++i;  
-            }  
-            if(i<j){  
-                int t=arr[i];  
-                arr[i]=arr[j];  
-                arr[j]=t;  
-            }  
-        }  
-        arr[left]=arr[i];  
-        arr[i]=temp;  
-        qs(arr,left,i-1);  
-        qs(arr,j+1,right);  
-    } 
   
 }
+/*
+==============================================================
+This software is released under GNU/GPL license
+Copyright (c) 2015, Ocean University of China
+
+Written by:                   
+Xiaolong Wang* @ Ocean University of China 
+email: xiaolong@ouc.edu.cn
+website: http://www.DNAplusPro.com
+================================================================
+
+*/
 
 

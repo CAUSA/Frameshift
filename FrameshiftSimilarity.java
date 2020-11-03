@@ -1,26 +1,21 @@
 /*
 ==============================================================
-FrameshiftAlign - java version 1.0.001 
+FrameshiftSimilarity - java version 1.0.001 
 =============================================================
 */
 
 import java.io.*;
 //import java.util.*;
 
-public class FrameshiftAlign
+public class FrameshiftSimilarity
 {
 	public static void main(String args[])
 	{
 	try
 	{
-		System.out.println("\nBatch translate CDSs in the three different reading frames in the sense strand, align the three translations, and compute their pairwise similarities.\n"); 
-		System.out.println("\nUsage: FrameshiftAlign <Path> <CDS file> <[readthrough=]Y[es]/N[o]> \n"); 
-
 		Translation Trobj=new Translation();
 
-		//Reading the coding DNA sequences in fasta file
-		
-		System.out.println("Reading FASTA sequence file");
+		//Preparing args
 			
 		String path=args[0];
 		String CDSfile=path+"/"+args[1];
@@ -36,27 +31,53 @@ public class FrameshiftAlign
 			readthrough= false;
 			ReadThrough= "NonReadthrough";
 		}
+		
+		boolean ToAlign= false;
+		String	Aligned= "";
+		if (args[3].toLowerCase().indexOf("y")>=0)
+		{
+			ToAlign= true;
+			Aligned= "Aligned";
+		}
+		else
+		{
+			ToAlign= false;
+			Aligned= "NotAligned";
+		}
 		  
-	  	String SimilarityFile=CDSfile+"-"+ReadThrough+".ClustalW.Frameshift.Similarities.txt";
- 		
+		if(ToAlign)
+		{
+			System.out.println("\nBatch translate CDSs in the three different reading frames in the sense strand, align the three translations, and compute their pairwise similarities.\n"); 
+		}
+		else
+		{
+			System.out.println("\nBatch translate CDSs in the three different reading frames in the sense strand, and computer pairwise similarities of the three translations directly, without aligning.\n"); 
+		}
+
+	  	String SimilarityFile=CDSfile+".3-ORFs."+ReadThrough+".Pro."+Aligned+".Frameshifts.Similarities.txt";
+			   		
 		//Prepare directories for the sequence and ProSeq files	
 	
 		String CDSPath=path+"/CDS";
 		String ProPath=path+"/Pro";	
 		String AlnPath=path+"/Aln";	
+		String FssPath=path+"/Fss";	
+		String FssAlnPath=path+"/FssAln";	
 		
 		File CDSDir=new File(CDSPath);
 		File ProDir=new File(ProPath);
 		File AlnDir=new File(AlnPath);
+		File FssDir=new File(FssPath);
+		File FssAlnDir=new File(FssAlnPath);
 		
 		if(!CDSDir.exists()){ CDSDir.mkdir();}
 		if(!ProDir.exists()){ ProDir.mkdir();}
 		if(!AlnDir.exists()){ AlnDir.mkdir();}
+		if(!FssDir.exists()){ FssDir.mkdir();}
+		if(!FssAlnDir.exists()){ FssAlnDir.mkdir();}
 
 		String[] sName= new String[1000001];
 		String[] sData= new String[1000001]; 
-		String[] sData1= new String[1000001]; 
-		String[] sData2= new String[1000001]; 
 		
 		int i=0,j=0;
 		int TotalSeq=0;
@@ -80,14 +101,16 @@ public class FrameshiftAlign
 				char rec_char[]=rec.toCharArray();
 
 				//Name of the Sequence
-				if(rec_char[0]=='>'){
+				if(rec_char[0]=='>')
+				{
 					i++;
 					sName[i]=rec.substring(1);
 					sData[i]="";
 					if (i>1) {System.out.println(sData[i-1].length()+" Sites;");}
 					System.out.print("         Reading Sequence "+i+": "+sName[i]+"; ");
 				}
-				else{
+				else
+				{
 					
 					String rec1="";
 					
@@ -108,42 +131,24 @@ public class FrameshiftAlign
 		if (i>1) {System.out.print(sData[i].length()+" Sites\n");}
 		fr.close();
   		
-        TotalSeq=i-1;
+        TotalSeq=i;
        
 		String codon="", codon1="", amino="";			
 		String rec1="";
 		char rec_char1[];
 		
-		// Create frameshifts
-		
-		for  (int sNo=1;sNo<=TotalSeq;sNo++){
-		
-			System.out.println("Shifting Sequence "+sNo+": "+sName[sNo]+": ");			
-			//System.out.println(sData[sNo]);
-			rec1=sData[sNo];
-			rec_char1=rec1.toCharArray();
-			
-			if (rec1.length()<9) continue;
-			
- 			//Create frameshifts
-							
-			sData1[sNo]=sData[sNo].substring(0,3)+sData[sNo].substring(4);
-			sData2[sNo]=sData[sNo].substring(0,3)+sData[sNo].substring(5);				
-			
-		}
-			
 		//Translate the original and frameshifts into protein sequences
 		
 		for  (int sNo=1;sNo<=TotalSeq;sNo++){
 					
-			System.out.println("Translating Sequence "+sNo+": "+sName[sNo]+": ");			
+			System.out.println("Translating Sequence "+sNo);			
 			//System.out.println(sData[sNo]);
-			String profile=ProPath+"/"+String.valueOf(sNo)+".Pro.fas";
+			String FssFile=FssDir+"/"+String.valueOf(sNo)+".Fss.fas";
 					
-			BufferedWriter out=new BufferedWriter(new FileWriter(profile));
+			BufferedWriter out=new BufferedWriter(new FileWriter(FssFile));
 			
 			// ORF 1
-			 out.write("\r\n\r\n"+">"+sName[sNo]+"-0\r\n");
+			 out.write("\r\n\r\n"+">CDS"+sNo+"-0\r\n");
 			 
 			rec1=sData[sNo];
 			rec_char1=rec1.toCharArray();
@@ -167,111 +172,102 @@ public class FrameshiftAlign
 			}
 			
 			// ORF 2
-			 out.write("\r\n\r\n"+">"+sName[sNo]+"-1\r\n");
+			out.write("\r\n\r\n"+">CDS"+sNo+"-1\r\n");
 			 
-			// out.write("-"); //Insert no gap at the begining of the -1 frameshift protein sequence
-			 
-				rec1=sData1[sNo];
-				rec_char1=rec1.toCharArray();
-				codon="";
-				 for(i=0; i<rec1.length(); i++){
-					codon=codon+rec_char1[i];
-					if(codon.length() ==3){
-						codon1=codon.toUpperCase();
-						if (readthrough){
-							amino=Translation.translateReadthrough(codon1);
-						} else {
-							amino=Translation.translate(codon1);								
-						}
-						out.write(amino);
-						codon="";
+			codon="";
+			for(i=1; i<rec1.length(); i++)
+			{
+				codon=codon+rec_char1[i];
+				if(codon.length() ==3)
+				{
+					codon1=codon.toUpperCase();
+					if (readthrough)
+					{
+						amino=Translation.translateReadthrough(codon1);
+					} else 
+					{
+						amino=Translation.translate(codon1);								
 					}
-
+					out.write(amino);
+					codon="";
 				}
+
+			}
+			out.write("-"); //Insert a gap at the end of the -1 frameshift protein sequence
 
 			// ORF 3
-			 out.write("\r\n\r\n"+">"+sName[sNo]+"-2\r\n");
-			 out.write("-"); //Insert a gap at the begining of the -2 frameshift protein sequence
+			out.write("\r\n\r\n"+">CDS"+sNo+"-2\r\n");
+			out.write("-"); //Insert a gap at the begining of the -2 frameshift protein sequence
 			 
-				rec1=sData2[sNo];
-				rec_char1=rec1.toCharArray();
-				codon="";
-				 for(i=0; i<rec1.length(); i++){
-					codon=codon+rec_char1[i];
-					if(codon.length() ==3){
-						codon1=codon.toUpperCase();
-						if (readthrough){
-							amino=Translation.translateReadthrough(codon1);
-						} else {
-							amino=Translation.translate(codon1);								
-						}
-						out.write(amino);
-						codon="";	
+			codon="";
+			for(i=2; i<rec1.length(); i++)
+			{
+				codon=codon+rec_char1[i];
+				if(codon.length() ==3)
+				{
+					codon1=codon.toUpperCase();
+					if (readthrough)
+					{
+						amino=Translation.translateReadthrough(codon1);
+					} 
+					else 
+					{
+						amino=Translation.translate(codon1);								
 					}
+					out.write(amino);
+					codon="";	
+				}
+			}
+			out.close();
+		}
 
+		
+		if (ToAlign)
+		{
+			// Run ClustalW to align the three translations
+			
+			System.out.println("\nCalling ClustalW to align unified sequences: \n");  
+		
+			for  (int sNo=1;sNo<=TotalSeq;sNo++)
+			{
+				String input=FssDir+"/"+String.valueOf(sNo)+".Fss.fas";
+				String output=FssAlnPath+"/"+String.valueOf(sNo)+".Fss.Clustalw.fas";
+					
+				String exe= "clustalw2 -INFILE=" + input + " -TYPE=PROTEIN" + " -OUTFILE=" + output + " -OUTPUT=PIR";
+				System.out.println(exe);
+
+				Process p = Runtime.getRuntime().exec(exe);
+				
+				br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				
+				String str;
+				
+				while(( str = br.readLine()) != null)
+				{
+					System.out.println(str);
 				}
 
-			out.close();
-		}	
-	
-		// Run ClustalW to align the three translations
-		
-		System.out.println("\nCalling ClustalW to align unified sequences: \n");  
-	
-		for  (int sNo=1;sNo<=TotalSeq;sNo++)
-		{
-			String input=ProPath+"/"+String.valueOf(sNo)+".Pro.fas";
-			String output=AlnPath+"/"+String.valueOf(sNo)+".pro.Clustalw.fas";
+				int exitCode = p.waitFor();
 				
-			String exe= "clustalw2 -INFILE=" + input + " -TYPE=PROTEIN" + " -OUTFILE=" + output + " -OUTPUT=PIR";
-			System.out.println(exe);
+				while(( str = br.readLine()) != null)
+				{
+					System.out.println(str);
+				}
 
-			Process p = Runtime.getRuntime().exec(exe);
-			
-			br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			
-			String str;
-			
-			while(( str = br.readLine()) != null)
-			{
-				System.out.println(str);
+				if (exitCode == 0) 
+				{
+					System.out.println("\nClustalw Alignment SUCCESS!\n");
+				} 
+				else 
+				{
+					System.err.println("\nClustalw Alignment ERROR! (Error Number:" + exitCode+")\n");
+					System.exit(0);
+				}
+		
 			}
-
-			int exitCode = p.waitFor();
-			
-			while(( str = br.readLine()) != null)
-			{
-				System.out.println(str);
-			}
-
-			if (exitCode == 0) 
-			{
-				System.out.println("\nClustal ProSeq SUCCESS!\n");
-			} 
-			else 
-			{
-				System.err.println("\nClustal ProSeq ERROR! (Error Number:" + exitCode+")\n");
-				System.exit(0);
-			}
-	
 		}
 	
 	//Compute Similarity
-		
-	    // Preparing Output file
- 		
-		BufferedWriter out=new BufferedWriter(new FileWriter(SimilarityFile));
-
-		String[] ProSeq= new String[4]; 
-
-        System.out.println("Compute the pairwise similarities of frameshifts and wild-type protein sequences: \r\n");   
- 
-		System.out.println("Total Number of Sequences: "+String.valueOf(TotalSeq)+"\r\n");
-        System.out.println("No\tName\tLength\tsAA-1-2\tsAA-1-3\tsAA-2-3\tS-1-2\tS-1-3\tS-2-3\tAverage\tGaps\r\n"); 
-
-		out.write(SimilarityFile+"\r\n");
-		out.write("Total Number of Sequences: "+String.valueOf(TotalSeq)+"\r\n");
-		out.write("No\tName\tLength\tsAA-1-2\tsAA-1-3\tsAA-2-3\tS-1-2\tS-1-3\tS-2-3\tAverage\tGaps\r\n");
 		
 		//Preparing the scoring matrix Gon250
 		
@@ -315,14 +311,30 @@ public class FrameshiftAlign
 				//System.out.print("\n");
 			}
 
+	    // Preparing Output file
+ 		
+		BufferedWriter out=new BufferedWriter(new FileWriter(SimilarityFile));
+
+ 		String profile="";
+ 		String[] ProSeq= new String[4]; 
+ 		
+        System.out.println("No\tLength\tsAA-1-2\tsAA-1-3\tsAA-2-3\tS-1-2\tS-1-3\tS-2-3\tAverage\tGaps\r\n"); 
+
+		out.write(SimilarityFile+"\r\n");
+		out.write("Total Number of Sequences: "+String.valueOf(TotalSeq)+"\r\n");
+		out.write("No\tLength\tsAA-1-2\tsAA-1-3\tsAA-2-3\tS-1-2\tS-1-3\tS-2-3\tAverage\tGaps\tDescription\r\n");
+
 		for  (int sNo=1;sNo<=TotalSeq;sNo++)
 		{ 
 			
-			String alnfile=AlnPath+"/"+String.valueOf(sNo)+".pro.Clustalw.fas";
-				
-			//Read the three translations for each ORF 
+			if (ToAlign)
+			{profile=FssAlnPath+"/"+String.valueOf(sNo)+".Fss.Clustalw.fas";}
+			else 
+			{profile=FssPath+"/"+String.valueOf(sNo)+".Fss.fas";}
 			
-			fr=new FileReader(alnfile);
+			//Read the Protein sequences for each ORF 		
+			
+			fr=new FileReader(profile);
 			br=new BufferedReader(fr);
 			record=new String();
 			
@@ -344,7 +356,7 @@ public class FrameshiftAlign
 						if(rec_char[0]=='>')
 						{
 							i++;
-							sName[i]=rec.substring(1);
+							//sName[i]=rec.substring(1);
 							sData[i]="";
 							if (i>1) 
 							{
@@ -364,73 +376,74 @@ public class FrameshiftAlign
 			
 			fr.close();
 			
-			// Compute Similarity
-			
-			String ThisSeq="";
-			String ThatSeq = ""; 
-			String ThisAA="";
-			String ThatAA = ""; 
-			int [][]Gaps=new int [4][4];
-			int [][]SimilarAAs=new int [4][4];
-			double [][]Similarity=new double [4][4];	            
-			double MeanSimilarity=0.0;	
-			double TotalGaps=0.0;	           
-			double FSS=0.0;	
-			int AlnLen=ProSeq[1].length();
-				
-			for (i = 1; i <= 3; i++)
-			{
-			   ThisSeq = ProSeq[i];
-			   
-				for (j = i+1; j <=3; j++)
-				{
-					ThatSeq = ProSeq[j];
-					SimilarAAs[i][j]=0;
-					Similarity[i][j]=0.0;
-					for (int Pos = 0; Pos < ProSeq[i].length()-1; Pos++)
-					{
-						ThisAA = ThisSeq.substring(Pos,Pos+1);
-						ThatAA = ThatSeq.substring(Pos,Pos+1);
-									   
-						if (ThisAA.equals("-")||ThatAA.equals("-")) { Gaps[i][j]++; }
-						
-						int AA1No=allAAs.indexOf(ThisAA)+1;
-						int AA2No=allAAs.indexOf(ThatAA)+1;
-						
-						if (AA1No>0&&AA2No>0){FSS=ScoreMatrix[AA1No][AA2No];} else { FSS = -1;}	
-						
-						if (FSS>=0) {SimilarAAs[i][j]++;  }
-						
-						//System.out.print("AA1: "+ThisAA+": "+String.valueOf(AA1No));
-						//System.out.print(" --> AA2: "+ThatAA+": "+String.valueOf(AA2No));
-						//System.out.print(", FSS: "+String.valueOf(FSS));
-						//System.out.print(", SimilarAAs: "+String.valueOf(SimilarAAs[i][j])+"\n");
-					}
-					
-					Similarity[i][j] = (double) SimilarAAs[i][j]/AlnLen;
-				}
-		   
-			}
+		// Compute Similarity
+ 		
+        String iSeq="";
+        String jSeq = ""; 
+        String iAA="";
+        String jAA = ""; 
+   		int [] Gaps=new int [4];
+		double TotalGaps=0.0;	           
+		double FSS=0.0;	
+  		int [][]SimilarAAs=new int [4][4];
+		double [][]Similarity=new double [4][4];	            
+		double MeanSimilarity=0.0;	
 		
+		int AlnLen=ProSeq[1].length();
+     
+        for (i = 1; i <= 3; i++)
+        {
+			iSeq = ProSeq[i];
+			
+			Gaps[i]= countOf(iSeq, "-");
+ 		   
+			for (j = i+1; j <=3; j++)
+            {
+	            jSeq = ProSeq[j];
+				SimilarAAs[i][j]=0;
+				Similarity[i][j]=0.0;
+				
+		        for (int Pos = 0; Pos < AlnLen; Pos++)
+		        {
+	                iAA = iSeq.substring(Pos,Pos+1);
+	                jAA = jSeq.substring(Pos,Pos+1);
+	                               	                
+	        		int AA1No=allAAs.indexOf(iAA)+1;
+	        		int AA2No=allAAs.indexOf(jAA)+1;
+					
+	        		if (AA1No>0&&AA2No>0){FSS=ScoreMatrix[AA1No][AA2No];} else { FSS = -1;}	
+					
+	        		if (FSS>=0) {SimilarAAs[i][j]++;  }
+					
+	        		//System.out.print(Pos+": AA1: "+iAA+": "+String.valueOf(AA1No));
+	        		//System.out.print(" --> AA2: "+jAA+": "+String.valueOf(AA2No));
+	        		//System.out.print(", FSS: "+String.valueOf(FSS));
+	        		//System.out.print(", SimilarAAs: "+String.valueOf(SimilarAAs[i][j])+"\n");
+				}
+				
+				Similarity[i][j] = (double) SimilarAAs[i][j]/AlnLen;
+			}
+ 		}
+         
 			MeanSimilarity=(Similarity[1][2]+Similarity[1][3])/2.0;
-			TotalGaps = (Gaps[1][2]+Gaps[1][3]+Gaps[2][3]);
+			TotalGaps = Gaps[1]+Gaps[2]+Gaps[3];
 			
 			//output results to file
 			
 			out.write(sNo+"\t"); 
 			out.write(String.valueOf(AlnLen)+"\t"); 
 			
-			 for (i = 1; i <= 3; i++)
+			for (i = 1; i <= 3; i++)
 			{
-			  for (j = i+1; j <=3; j++)
+				for (j = i+1; j <=3; j++)
 				{
 					out.write(String.valueOf(SimilarAAs[i][j])+"\t");
 				}
 			}
 				
-			 for (i = 1; i <= 3; i++)
+			for (i = 1; i <= 3; i++)
 			{
-			  for (j = i+1; j <=3; j++)
+				for (j = i+1; j <=3; j++)
 				{
 					out.write(String.valueOf(Similarity[i][j])+"\t"); 
 				}
@@ -446,7 +459,7 @@ public class FrameshiftAlign
 			
 			 for (i = 1; i <= 3; i++)
 			{
-			  for (j = i+1; j <=3; j++)
+				for (j = i+1; j <=3; j++)
 				{
 					System.out.print(String.valueOf(SimilarAAs[i][j])+"\t");
 				}
@@ -454,14 +467,13 @@ public class FrameshiftAlign
 	
 			for (i = 1; i <= 3; i++)
 			{
-			  for (j = i+1; j <=3; j++)
+				for (j = i+1; j <=3; j++)
 				{
 					System.out.print(String.valueOf(Similarity[i][j])+"\t"); 
 				}
 			}
 			System.out.print(String.valueOf(MeanSimilarity)+"\t");	
-	        System.out.print(String.valueOf(TotalGaps)+"\t"); 
-			System.out.print(sName[sNo]+"\r\n"); 
+	        System.out.print(String.valueOf(TotalGaps)+"\r\n "); 
 		}
 		
 		out.close();
@@ -471,10 +483,18 @@ public class FrameshiftAlign
 	}
 	catch(Exception e)
 	{
+		System.out.println("\nUsage: FrameshiftSimilarity <Path> <CDS file> <[readthrough=]Yes/No> <[ToAlign=]Yes/No>\n"); 
+		System.out.println("\nSomething is wrong: \n"); 
 		System.out.println(e);
 		e.printStackTrace();
 	}
 	}
+	
+public static int countOf (String s, String c) 
+{
+    return s.length() - s.replace(c, "").length();
+}
+
 }
 /*
 ==============================================================
