@@ -1,6 +1,6 @@
 /*
 ==============================================================
-AlternativeCodes - java version 1.0.001 
+AlternativeCodes.java version 2.0.001 
 =============================================================
 */
 
@@ -457,4 +457,16 @@ public class AlternativeCodes{
 	 }
 }
 
+/*
+==============================================================
+This software is released under GNU/GPL license
+Copyright (c) 2015, Ocean University of China
+
+Written by:                   
+Xiaolong Wang* @ Ocean University of China 
+
+email: xiaolong@ouc.edu.cn
+website: http://www.dnapluspro.com
+================================================================
+*/
 

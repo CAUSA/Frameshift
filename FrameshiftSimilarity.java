@@ -1,6 +1,6 @@
 /*
 ==============================================================
-FrameshiftSimilarity - java version 1.0.001 
+FrameshiftSimilarity.java version 2.0.001 
 =============================================================
 */
 
@@ -13,6 +13,8 @@ public class FrameshiftSimilarity
 	{
 	try
 	{
+		System.out.println("\nBatch translate CDSs in the three different reading frames in the sense strand, and compute their pairwise similarities.\n"); 
+		System.out.println("\nUsage: FrameshiftSimilarity <Path> <CDS file> <[readthrough=]Yes/No> <[ToAlign=]Yes/No>\n"); 
 		Translation Trobj=new Translation();
 
 		//Preparing args
@@ -47,11 +49,11 @@ public class FrameshiftSimilarity
 		  
 		if(ToAlign)
 		{
-			System.out.println("\nBatch translate CDSs in the three different reading frames in the sense strand, align the three translations, and compute their pairwise similarities.\n"); 
+			System.out.println("\n The three translations will be compared by aligning.\n"); 
 		}
 		else
 		{
-			System.out.println("\nBatch translate CDSs in the three different reading frames in the sense strand, and computer pairwise similarities of the three translations directly, without aligning.\n"); 
+			System.out.println("\n The three translations will be compared directly, without aligning.\n"); 
 		}
 
 	  	String SimilarityFile=CDSfile+".3-ORFs."+ReadThrough+".Pro."+Aligned+".Frameshifts.Similarities.txt";
@@ -483,7 +485,6 @@ public class FrameshiftSimilarity
 	}
 	catch(Exception e)
 	{
-		System.out.println("\nUsage: FrameshiftSimilarity <Path> <CDS file> <[readthrough=]Yes/No> <[ToAlign=]Yes/No>\n"); 
 		System.out.println("\nSomething is wrong: \n"); 
 		System.out.println(e);
 		e.printStackTrace();

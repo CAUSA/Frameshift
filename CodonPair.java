@@ -1,6 +1,6 @@
 /*
 ==============================================================
-CodonPair - java version 2.0.001 
+CodonPair.java version 2.0.001 
 =============================================================
 */
 
@@ -13,7 +13,8 @@ public class CodonPair
 	{
 	try
 	{
-		System.out.println(" Codon and Codon Pair Usage \n Usage: CodonPair <Input File Name of protein coding DNA sequences (in fasta format)>>\n"); 
+ 		System.out.println("\n Computes the usages of codon pairs in the genomes."); 
+		System.out.println("\n Usage: CodonPair <Input File Name of protein coding DNA sequences in fasta format>\n"); 
 	   
 		Translation Trobj=new Translation();
 		

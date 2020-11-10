@@ -1,3 +1,8 @@
+/*
+==============================================================
+RandomCodes.java version 2.0.001 
+=============================================================
+*/
 
 import java.util.ArrayList;
 import java.util.List;
@@ -424,4 +429,16 @@ public static void main(String[] args)
 	}
 }
 
+/*
+==============================================================
+This software is released under GNU/GPL license
+Copyright (c) 2015, Ocean University of China
+
+Written by:                   
+Xiaolong Wang* @ Ocean University of China 
+
+email: xiaolong@ouc.edu.cn
+website: http://www.dnapluspro.com
+================================================================
+*/
 

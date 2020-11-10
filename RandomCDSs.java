@@ -1,16 +1,7 @@
 /*
 ==============================================================
-RandomCDSs - java version 1.0.001 
-
-Produce and translate CDS files; 
-Each CDS file contain three independent, random CDSs; 
-Each CDS containing 500 sense codons.
-
-Usage: 
- 
-java RandomCDSs <\PATH\TO\CDS\FILE> <Number of CDSs> 		
+RandomCDSs.java version 2.0.001 
 ==============================================================
-
 */
 
 import java.io.*;
@@ -21,11 +12,14 @@ public class RandomCDSs{
 
 	try
 	{
-        //accept args  
-			
+ 		System.out.println("Produce and translate CDS files. Each CDS file contain three independent, random CDSs. Each CDS containing 500 sense codons.");
+		System.out.println("Usage: java -cp ./ RandomCDSs <\PATH\TO\CDS\FILE> <Number of CDSs>");
+	 					
 		RandomCDSs FAobj=new RandomCDSs();
 		Translation Trobj=new Translation();
 			
+       //accept args 
+	   
 		String path=args[0];
 		int TotalSeq=Integer.parseInt(args[1]);
 		

@@ -1,6 +1,6 @@
 /*
 ==============================================================
-FrameshiftCodon - java version 1.0.001 
+FrameshiftCodon.java version 2.0.001 
 =============================================================
 */
 
@@ -12,7 +12,8 @@ public class FrameshiftCodon
 	{
 	try
 	{
-        System.out.println("\n Usage: java FrameshiftCodon <-M=1/2/3> \n use -M=1/2/3 to select scoring matrix: \n \t\t\t1=BLOSSUM62; \n \t\t\t2=PAM250; \t\t\t\n 3=GON250");
+        System.out.println("\n Usage: computes the frameshift substitution scores (FSS) for each kind of codon substitution");
+       System.out.println("\n Usage: java FrameshiftCodon <-M=1/2/3> \n use -M=1/2/3 to select scoring matrix: \n \t\t\t1=BLOSSUM62; \n \t\t\t2=PAM250; \t\t\t\n 3=GON250");
 
 		Translation Trobj=new Translation();
 

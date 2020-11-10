@@ -1,6 +1,6 @@
 /*
 ==============================================================
-CodonUsage - java version 2.0.001 
+CodonUsage.java version 2.0.001 
 ==============================================================
 */
 
@@ -13,7 +13,8 @@ public class CodonUsage
 	{
 	try
 	{
- 		System.out.println(" Codon Usage \n Usage: CodonUsage <Input File Name of protein coding DNA sequences (in fasta format)>>\n"); 
+ 		System.out.println("\n Computes the usages of codons in the genomes."); 
+ 		System.out.println("\n Usage: CodonUsage <Input File Name for protein coding DNA sequences in fasta format>\n"); 
 	   
 		CodonUsage FAobj=new CodonUsage();
 		Translation Trobj=new Translation();
@@ -55,7 +56,7 @@ public class CodonUsage
 				if(rec_char[0]=='>')
 				{
 					i++;
-					SeqName[i]=ClearSeqName(rec.substring(1,rec.length()>20?20:rec.length()));
+					SeqName[i]=rec;
 					SeqData[i]="";
 					if (i>1) {System.out.print(SeqData[i-1].length()+" Sites\r\n");}
 					System.out.print("Sequence "+i+": "+SeqName[i]+", ");
@@ -144,46 +145,6 @@ public class CodonUsage
 			System.out.println(e);
 			e.printStackTrace();
 		}
-	}
-
-	public static String ClearSeqName(String SeqName)
-	{
-		SeqName=SeqName.replace(' ', '-');
-		SeqName=SeqName.replace('(', '-');
-		SeqName=SeqName.replace(')', '-');
-		SeqName=SeqName.replace('[', '-');
-		SeqName=SeqName.replace(']', '-');
-		SeqName=SeqName.replace('{', '-');
-		SeqName=SeqName.replace('}', '-');
-		SeqName=SeqName.replace(';', '-');
-		SeqName=SeqName.replace(':', '-');
-		SeqName=SeqName.replace('"', '-');
-		SeqName=SeqName.replace('\'', '-');
-		SeqName=SeqName.replace('-', '-');
-		SeqName=SeqName.replace('>', '-');
-		SeqName=SeqName.replace('~', '-');
-		SeqName=SeqName.replace('#', '-');
-		SeqName=SeqName.replace('*', '-');
-		SeqName=SeqName.replace('&', '-');
-		SeqName=SeqName.replace('%', '-');
-		SeqName=SeqName.replace('=', '-');
-		SeqName=SeqName.replace('+', '-');
-		SeqName=SeqName.replace('?', '-');
-		SeqName=SeqName.replace('<', '-');
-		SeqName=SeqName.replace(',', '-');
-		SeqName=SeqName.replace('.', '-');
-		SeqName=SeqName.replace('$', '-');
-		SeqName=SeqName.replace('@', '-');
-		SeqName=SeqName.replace('!', '-');
-		SeqName=SeqName.replace('|', '-');
-		SeqName=SeqName.replace('\\', '-');
-		SeqName=SeqName.replace('/', '-');
-		SeqName=SeqName.replaceAll("-", "");
-		int j=SeqName.indexOf("\\");
-		if(j>0){SeqName=SeqName.substring(0,j-1)+SeqName.substring(j+1);}
-		j=SeqName.indexOf("/");
-		if(j>0){SeqName=SeqName.substring(0,j-1)+SeqName.substring(j+1);}
-		return SeqName;
 	}
 }
 /*
