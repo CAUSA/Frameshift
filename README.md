@@ -26,7 +26,7 @@ All input and output CDS and protein sequence files are in fasta format.
 
 ***ShiftCodons.java*** computes the frameshift substitution scores (FSS) for each kind of codon substitution using a scoring matrix, BLOSSUM62, PAM250, or GON250. 
 
-***ShiftCodonPair.java*** computes the FSSs for each kind of codon pairs using a scoring matrix, BLOSSUM62, PAM250, or GON250. 
+***ShiftCodonPair.java*** computes the FSSs for each kind of codon pairs using a scoring matrix, BLOSSUM62, PAM250, or GON250. (This program was removed in version 2.1.001 because it is integrated into CodonPair.java.)
 
 #### 4	Computational analysis of alternative codon tables
 
