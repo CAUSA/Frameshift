@@ -22,7 +22,6 @@ javac -cp ./ ScoringMatrix.java
 java -cp ./ RandomCodes 1 1000000 1 Y >  RandomCodes-1Mx1-1-Gon250.txt &
 java -cp ./ RandomCodes 2 1000000 1 Y >  RandomCodes-1Mx1-2-Blossum62.txt  &
 java -cp ./ RandomCodes 3 1000000 1 Y >  RandomCodes-1Mx1-3-PAM250.txt &
-java -cp ./ RandomCodes 4 1000000 1 Y >  RandomCodes-1Mx1-4-Gon120.txt &
 
 # 2.2 Produce one million random genetic codes for 100 times, and calculate their average FSSs 
 java -cp ./ RandomCodes 1 1000000 100 N >  RandomCodes-1Mx100-1-Gon250.txt &
@@ -33,7 +32,6 @@ java -cp ./ RandomCodes 3 1000000 100 N >  RandomCodes-1Mx100-3-PAM250.txt &
  java -cp ./ AlternativeCodes 1 > AlternativeCodes-1-Gon250.txt &
  java -cp ./ AlternativeCodes 2 > AlternativeCodes-2-Blossum62.txt &
  java -cp ./ AlternativeCodes 3 > AlternativeCodes-3-PAM250.txt &
- java -cp ./ AlternativeCodes 4 > AlternativeCodes-4-Gon120.txt &
 
 # 4. Produce random CDSs 
 mkdir ./Simulated
