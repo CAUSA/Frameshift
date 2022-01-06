@@ -1,10 +1,10 @@
 ### Frameshift substitutions and the frameshift tolerability of the genetic code and the protein-coding genes
 
-#### 1	Translation of coding DNA sequences (CDSs) 
+#### 1	Simulation and translation of coding DNA sequences (CDSs) 
 
-Reference CDSs in model organisms were retrieved from the UCSC Genome Database.
+Reference CDSs in model organisms were retrieved from the NCBI or UCSC Genome Database.
 
-***RandomCDSs.java*** generate random CDSs, each containing 500 random sense codons. 
+***RandomCDSs.java*** generate random CDSs, each containing a given number of random sense codons. 
 
 ***Translation.java*** contains two functions, "translate" and "translateReadthrough", which are called by other programs to translate coding sequences (CDSs) into protein sequences. 
 
@@ -14,17 +14,19 @@ The "translateReadthrough" function translate CDSs using the standard genetic co
 
 All input and output CDS and protein sequence files are in fasta format. 
 
+*** ScoringMatrix.java*** which is called by other programs to read the scoring matrices. 
+
 #### 2	Aligning and computing the pairwise similarities of the wild-type and frameshifts
 
-***FrameshiftSimilarity.java*** batch translates protein-coding sequences (CDSs) in their three different reading frames and compute their pairwise similarities. Before calculating the pairwise similarities, the three translations may or may not be aligned.
+***Similarity.java*** batch translates (real or simulated random) protein-coding sequences (CDSs) in their three different reading frames and compute their pairwise similarities. Before calculating the pairwise similarities, the three translations may or may not be aligned.
 
-***RandomSimilarity.java*** compute the pairwise similarities among random protein sequences translated from random CDSs in groups of three sequences.
+***SubScore.java*** whose function is same to Similarity.java but outputs every FSS (for every site of each pair of wild-type and frameshift translations)
  
 #### 3 Computational analysis of frameshift codon substitutions
 
-***FrameshiftCodon.java*** computes the frameshift substitution scores (FSS) for each kind of codon substitution using a scoring matrix, BLOSSUM62, PAM250, or GON250. 
+***ShiftCodons.java*** computes the frameshift substitution scores (FSS) for each kind of codon substitution using a scoring matrix, BLOSSUM62, PAM250, or GON250. 
 
-***FrameshiftCodonPair.java*** computes the FSSs for each kind of codon pairs using a scoring matrix, BLOSSUM62, PAM250, or GON250. 
+***ShiftCodonPair.java*** computes the FSSs for each kind of codon pairs using a scoring matrix, BLOSSUM62, PAM250, or GON250. 
 
 #### 4	Computational analysis of alternative codon tables
 
@@ -40,7 +42,7 @@ The sum of FSSs for each of the random or compatible genetic codes was computed,
 
 ***CodonPair.java*** computes the usages of codon pairs in the genomes 
 
-The codons/codon pairs whose observed value is greater/smaller than their expected value were identified as over-/under-represented, and their weighted average FSSs were calculated for each genome.
+The codons/codon pairs whose observed value is greater/smaller than their expected value was identified as over-/under-represented, and their weighted average FSSs were calculated for each genome.
 
 The result of these calculations is a list of 4096 codon pairs with their corresponding FSSs, which is used to evaluate the frameshift tolerability of the codon pairs presented in a genome.
 
@@ -48,7 +50,7 @@ Please cite the following articles if you use these programs:
 
 [1] Wang X, Wang X, Chen G, Zhang J, Liu Y, Yang C. 2015. The shiftability of protein-coding genes: the genetic code was optimized for frameshift tolerating. PeerJ PrePrints 3:e806v1 https://doi.org/10.7287/peerj.preprints.806v1
 
-[2] X. Wang et al., Frameshifts and wild-type protein sequences are always highly similar because the genetic code and genomes were optimized for frameshift tolerance. bioRxiv 067736; doi: https://doi.org/10.1101/067736
+[2] X. Wang et al., Frameshifts and wild-type protein sequences are highly similar because the genetic code and genomes were optimized for frameshift tolerance. bioRxiv 067736; doi: https://doi.org/10.1101/067736
 
 [3] Freeland, S.J. and L.D. Hurst. The genetic code is one in a million. J Mol Evol, 1998. 47(3): p. 238-48.
 
