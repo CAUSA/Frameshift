@@ -1,19 +1,20 @@
 /*
 ==============================================================
-RandomCDSs.java version 2.0.001 
+RandomCDSs.java version 2.1.001 
 ==============================================================
 */
 
 import java.io.*;
 //import java.util.*;
 
-public class RandomCDSs{
-	public static void main(String args[]){
-
+public class RandomCDSs
+{
+public static void main(String args[])
+{
 	try
 	{
- 		System.out.println("Produce and translate CDS files. Each CDS file contain three independent, random CDSs. Each CDS containing 500 sense codons.");
-		System.out.println("Usage: java -cp ./ RandomCDSs <\PATH\TO\CDS\FILE> <Number of CDSs>");
+ 		System.out.println("Produce and translate CDS files. Each CDS file contain three independent, random CDSs.");
+		System.out.println("Usage: java -cp ./ RandomCDSs </PATH/TO/SAVE/CDS/FILES> <Number of CDSs> <Number of codons for each CDS>");
 	 					
 		RandomCDSs FAobj=new RandomCDSs();
 		Translation Trobj=new Translation();
@@ -22,6 +23,7 @@ public class RandomCDSs{
 	   
 		String path=args[0];
 		int TotalSeq=Integer.parseInt(args[1]);
+		int nCodons=Integer.parseInt(args[2]);
 		
 		//Prepare directories for the sequence and alignment files	
 	
@@ -34,6 +36,18 @@ public class RandomCDSs{
 		if(!CDSDir.exists()){ CDSDir.mkdir();}
 		if(!ProDir.exists()){ ProDir.mkdir();}
 	
+		if (nCodons<100) 
+		{
+			System.out.println("The number of Codons should be greater than 100.");
+			System.exit(0);
+		}
+		if (nCodons>500) 
+		{
+			System.out.println("Warning: If you are using the MSA program to align the translations, the number of Codons should be smaller than or equals to 500, otherwise the MSA program will cause an error in aligning them.");
+			System.exit(0);
+		}
+		System.out.println("The number of Codons for each CDS: "+nCodons);
+
 		if (TotalSeq<10) 
 		{
 			System.out.println("The number of sequences should be greater than 10.");
@@ -44,7 +58,7 @@ public class RandomCDSs{
 			System.out.println("Too many sequences.The number of sequences should be smaller than or equals to 100000.");
 			System.exit(0);
 		}
-
+		
 		String[] sName= new String[100001];
 		String[] sData= new String[100001]; 
 		
@@ -64,17 +78,17 @@ public class RandomCDSs{
 			System.out.println("Producing and translating CDS "+sNo+": ");			
 			
 			String CDSfile=CDSPath+"/"+String.valueOf(sNo)+".CDS.fas";
-			String profile=ProDir+"/"+String.valueOf(sNo)+".Pro.fas";
+			String profile=ProPath+"/"+String.valueOf(sNo)+".Pro.fas";
 					
 			BufferedWriter outCDS = new BufferedWriter(new FileWriter(CDSfile));
 			BufferedWriter outPro = new BufferedWriter(new FileWriter(profile));
 			
-			outAllCDS.write("\r\n"+">RandomCDS-"+sNo+"\r\n");
+			outAllCDS.write(">RandomCDS-"+sNo+"\r\n");
 			
 			for (int n=1; n<=3; n++)
 			{
-				outCDS.write("\r\n"+">RandomCDS-"+sNo+"-"+n+"\r\n");			 
-				outPro.write("\r\n"+">RandomCDS-"+sNo+"-"+n+"\r\n");			 
+				outCDS.write(">RandomCDS-"+sNo+"-"+n+"\r\n");			 
+				outPro.write(">RandomCDS-"+sNo+"-"+n+"\r\n");			 
 				
 				int length=0;
 				
@@ -100,23 +114,24 @@ public class RandomCDSs{
 						outCDS.write(codon);
 						outPro.write(amino);
 						length++;
-						if (length>=500) break;
+						if (length>=nCodons) break;
 					}					
 				}			
+				outCDS.write("\r\n");			 
+				outPro.write("\r\n");			 
 			}
 			outCDS.close();
 			outPro.close();
+			outAllCDS.write("\r\n");			 
 		}
 		outAllCDS.close();	
-		System.out.println("Produce and translate CDS files; \nEach CDS file contain three independent, random CDSs;\n Each CDS containing 500 sense codons.\n");
 
 		System.out.println(TotalSeq +" random CDSs are produced and translated into protein sequences. \n The CDS file containing all CDSs are saved as : "+ AllCDSfile + "; \n The CDS files containg each CDS are saved in: "+ CDSDir +"; \n The translated protein sequences files are saved in : "+ProPath +"\n\n");
 		
 	}
 	catch(Exception e)
 		{
-			System.out.println("Produce and translate CDS files; \nEach CDS file contain three independent, random CDSs;\n Each CDS containing 500 sense codons.\n");
-			System.out.println("\nUsage: RandomCDSs <Path/to/CDS/Files> <Number of CDS sets> <[readthrough=]Y[es]/N[o]> \n"); 
+			System.out.println("Something wrong: ");
 			System.out.println(e);
 			e.printStackTrace();
 		}
