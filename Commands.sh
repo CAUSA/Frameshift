@@ -1,3 +1,5 @@
+The command lines to compile and execute the java programs:
+
 # 1. Compile the java programs
 javac -cp ./ Translation.java
 javac -cp ./ CodonPair.java
@@ -6,13 +8,12 @@ javac -cp ./ ShiftCodons.java
 javac -cp ./ AlternativeCodes.java
 javac -cp ./ RandomCodes.java
 javac -cp ./ RandomCDSs.java
-javac -cp ./ RandomSimilarity.java
 javac -cp ./ Similarity.java
 
 # 1. Computes the frameshift substitution scores (FSS) for each kind of codon substitution using a scoring matrix, BLOSSUM62, PAM250, or GON250.
- java -cp ./ ShiftCodons 1 > ShiftCodons-1-Gon250.txt
- java -cp ./ ShiftCodons 2 > ShiftCodons-2-Blossum62.txt
- java -cp ./ ShiftCodons 3 > ShiftCodons-3-PAM250.txt
+ java -cp ./ ShiftCodons -M=1 > ShiftCodons-1-Gon250.txt
+ java -cp ./ ShiftCodons -M=2 > ShiftCodons-2-Blossum62.txt
+ java -cp ./ ShiftCodons -M=3 > ShiftCodons-3-PAM250.txt
  
 # 2. Produce random genetic codes and calculate their FSSs
 # 2.1 Produce one million random genetic codes, calculate, and output their FSSs for each genetic code
