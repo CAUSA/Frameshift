@@ -9,6 +9,8 @@ javac -cp ./ AlternativeCodes.java
 javac -cp ./ RandomCodes.java
 javac -cp ./ RandomCDSs.java
 javac -cp ./ Similarity.java
+javac -cp ./ SubScore.java
+javac -cp ./ ScoringMatrix.java
 
 # 1. Computes the frameshift substitution scores (FSS) for each kind of codon substitution using a scoring matrix, BLOSSUM62, PAM250, or GON250.
  java -cp ./ ShiftCodons -M=1 > ShiftCodons-1-Gon250.txt
@@ -26,7 +28,6 @@ java -cp ./ RandomCodes 4 1000000 1 Y >  RandomCodes-1Mx1-4-Gon120.txt &
 java -cp ./ RandomCodes 1 1000000 100 N >  RandomCodes-1Mx100-1-Gon250.txt &
 java -cp ./ RandomCodes 2 1000000 100 N >  RandomCodes-1Mx100-2-Blossum62.txt &
 java -cp ./ RandomCodes 3 1000000 100 N >  RandomCodes-1Mx100-3-PAM250.txt &
-java -cp ./ RandomCodes 4 1000000 100 N >  RandomCodes-1Mx100-4-Gon120.txt &
 									    
 # 3. Produce all 13824 alternative genetic codes and calculate their FSSs
  java -cp ./ AlternativeCodes 1 > AlternativeCodes-1-Gon250.txt &
@@ -39,24 +40,24 @@ mkdir ./Simulated
 java -cp ./ RandomCDSs ./Simulated 100000
 
 # 5.  Calculate random Similarities of the random CDSs
-# 5.1 Calculate frameshift Similarities of the random CDSs by Clustalw aligning
+# 5.1 Calculate frameshift Similarities of the random CDSs, aligningby Clustalw 
 java -cp ./ Similarity ./Simulated Random-100000.CDS.fas Readthrough=Yes Random Clustalw 
 
-# 5.2 Calculate frameshift Similarities of the random CDSs by MSA aligning
+# 5.2 Calculate frameshift Similarities of the random CDSs, aligning by MSA 
 java -cp ./ Similarity ./Simulated Random-100000.CDS.fas Readthrough=Yes Random MSA 
 
-# 5.3 Calculate frameshift Similarities of the random CDSs by direct aligning
-java -cp ./ Similarity ./Simulated Random-100000.CDS.fas Readthrough=Yes Random Direct 
+# 5.3 Calculate frameshift Similarities of the random CDSs, aligningby FrameAlign 
+java -cp ./ Similarity ./Simulated Random-100000.CDS.fas Readthrough=Yes Random FrameAlign 
 
 # 6 Calculate frameshift Similarities of the random CDSs 
-# 6.1 Calculate frameshift Similarities of the random CDSs by Clustalw aligning
+# 6.1 Calculate frameshift Similarities of the random CDSs, aligning by Clustalw 
 java -cp ./ Similarity ./Simulated Random-100000.CDS.fas Readthrough=Yes Frameshift Clustalw 
 
-# 6.2 Calculate frameshift Similarities of the random CDSs by MSA aligning
+# 6.2 Calculate frameshift Similarities of the random CDSs, aligning by MSA 
 java -cp ./ Similarity ./Simulated Random-100000.CDS.fas Readthrough=Yes Frameshift MSA 
 
-# 6.3 Calculate frameshift Similarities of the random CDSs by direct aligning
-java -cp ./ Similarity ./Simulated Random-100000.CDS.fas Readthrough=Yes Frameshift Direct 
+# 6.3 Calculate frameshift Similarities of the random CDSs, aligning by FrameAlign 
+java -cp ./ Similarity ./Simulated Random-100000.CDS.fas Readthrough=Yes Frameshift FrameAlign 
 
 # 7. Calculate frameshift Similarity of the real CDSs (E. coli for example)
 # 7.1 download the reference CDSs from GenBank Genome Database
