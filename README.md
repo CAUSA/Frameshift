@@ -1,4 +1,4 @@
-### Frameshift substitutions and frameshift tolerability of the genetic code and protein-coding genes
+### Frameshift Substitution Scores and Frameshift Tolerability of the Genetic Code and Protein-coding Genes
 
 #### 1	Simulation and translation of coding DNA sequences (CDSs) 
 
