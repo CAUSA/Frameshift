@@ -14,7 +14,7 @@ The "translateReadthrough" function translate CDSs using the standard genetic co
 
 All input and output CDS and protein sequence files are in fasta format. 
 
-*** ScoringMatrix.java*** which is called by other programs to read the scoring matrices. 
+***ScoringMatrix.java*** which is called by other programs to read the scoring matrices. 
 
 #### 2	Aligning and computing the pairwise similarities of the wild-type and frameshifts
 
