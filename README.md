@@ -15,6 +15,7 @@ The "translateReadthrough" function translate CDSs using the standard genetic co
 All input and output CDS and protein sequence files are in fasta format. 
 
 ***ScoringMatrix.java*** which is called by other programs to read the scoring matrices. 
+The programs read AA Substitution Score Matrices in ./Matrix/Matrices.txt (from the AAindex database) ;
 
 #### 2	Aligning and computing the pairwise similarities of the wild-type and frameshifts
 
@@ -48,13 +49,20 @@ The result of these calculations is a list of 4096 codon pairs with their corres
 
 #### 6	Computational analysis of the AA properties in Random genetic codes (RGCs) and alternative genetic codes (AGCs)
 
-***AAindexRandomCodesFrameshiftCorrelation123.java*** Computational analysis of the AA properties in Random genetic codes (RGCs) ; 
+(1) To analysis real AAindex in normal distribution, use the following two programs:
 
-***AAindexAlternativeCodesFrameshiftCorrelation123.java*** Computational analysis of the AA properties in alternative genetic codes (AGCs)
+***AAindexRandomCodesFrameshiftCorrelation123.java*** Computational analysis of the AA properties in Random genetic codes (RGCs) ; 
+***AAindexAlternativeCodesFrameshiftCorrelation123.java*** Computational analysis of the AA properties in alternative genetic codes (AGCs);
+The programs read AA properties data in ./Matrix/aaindex1.txt (from the AAindex database) ;
+
+(2) To analysis Pseudo AAindex in normal distribution, use the following two programs:
 
 ***PseudoAAindexRandomCodesFrameshiftCorrelation123.java*** Computational analysis of the Pseudo AA properties in alternative genetic codes (AGCs) ;
-
 ***PseudoAAindexAlternativeCodesFrameshiftCorrelation123.java*** Computational analysis of the Pseudo AA properties in Random genetic codes (RGCs) ;  
+
+The programs read AA properties data in ./Matrix/FakeAAindex.txt (from the AAindex database) ;
+To analysis Pseudo AAindex in normal distribution, copy ./Matrix/normalFakeAAindex.txt to ./Matrix/FakeAAindex.txt;
+To analysis Pseudo AAindex in uniform distribution, copy ./Matrix/uniformFakeAAindex.txt to ./Matrix/FakeAAindex.txt;
 
 MSm and MSf are the mismatch and frameshift MS of a genetic code, respectively. As -1 and +1 frameshift MS are equal, only +1 frameshift MS was considered. For each AA property, we calculated: (1) the MSm and MSf values for each genetic code; (2) the Pearson's correlation coefficient (R) between the MSm and MSf of RGCs or AGCs; (3) the probability of the SGC's mismatch (Pm) or frameshift (Pf) optimality. 
 
