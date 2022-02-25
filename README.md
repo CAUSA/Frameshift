@@ -46,7 +46,19 @@ The codons/codon pairs whose observed value is greater/smaller than their expect
 
 The result of these calculations is a list of 4096 codon pairs with their corresponding FSSs, which is used to evaluate the frameshift tolerability of the codon pairs presented in a genome.
 
-Please cite the following articles if you use these programs:
+#### 6	Computational analysis of the AA properties in Random genetic codes (RGCs) and alternative genetic codes (AGCs)
+
+***AAindexRandomCodesFrameshiftCorrelation123.java*** Computational analysis of the AA properties in Random genetic codes (RGCs) ; 
+
+***AAindexAlternativeCodesFrameshiftCorrelation123.java*** Computational analysis of the AA properties in alternative genetic codes (AGCs)
+
+***PseudoAAindexRandomCodesFrameshiftCorrelation123.java*** Computational analysis of the Pseudo AA properties in alternative genetic codes (AGCs) ;
+
+***PseudoAAindexAlternativeCodesFrameshiftCorrelation123.java*** Computational analysis of the Pseudo AA properties in Random genetic codes (RGCs) ;  
+
+MSm and MSf are the mismatch and frameshift MS of a genetic code, respectively. As -1 and +1 frameshift MS are equal, only +1 frameshift MS was considered. For each AA property, we calculated: (1) the MSm and MSf values for each genetic code; (2) the Pearson's correlation coefficient (R) between the MSm and MSf of RGCs or AGCs; (3) the probability of the SGC's mismatch (Pm) or frameshift (Pf) optimality. 
+
+####Please cite the following articles if you use these programs:
 
 [1] Wang X, Wang X, Chen G, Zhang J, Liu Y, Yang C. 2015. The shiftability of protein-coding genes: the genetic code was optimized for frameshift tolerating. PeerJ PrePrints 3:e806v1 https://doi.org/10.7287/peerj.preprints.806v1
 
