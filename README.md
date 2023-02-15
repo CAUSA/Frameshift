@@ -1,4 +1,4 @@
-### Frameshift Substitution Scores and Frameshift Tolerability of the Genetic Code and Protein-coding Genes
+### Frameshift Tolerance of the Genetic Code and Protein-coding Genes
 
 #### 1	Simulation and translation of coding DNA sequences (CDSs) 
 
@@ -29,7 +29,7 @@ The programs read AA Substitution Score Matrices in ./Matrix/Matrices.txt (from 
 
 ***ShiftCodonPair.java*** computes the FSSs for each kind of codon pairs using a scoring matrix, BLOSSUM62, PAM250, or GON250. (This program was removed in version 2.1.001, as it was integrated into CodonPair.java.)
 
-#### 4	Computational analysis of alternative codon tables
+#### 4	Computational analysis of alternative genetic codes
 
 ***RandomCodes.java*** produces random codon tables by changing AAs assigned to the sense codons and keeping all degenerative codons synonymous (Freeland and Hurst [3]). 
 
@@ -47,32 +47,64 @@ The codons/codon pairs whose observed value is greater/smaller than their expect
 
 The result of these calculations is a list of 4096 codon pairs with their corresponding FSSs, which is used to evaluate the frameshift tolerability of the codon pairs presented in a genome.
 
-#### 6	Computational analysis of the AA properties in Random genetic codes (RGCs) and alternative genetic codes (AGCs)
+#### 6	Computational analysis of AA properties
 
-(1) To analysis real AAindex in normal distribution, use the following two programs:
+    This program produces nt-permutes, aa-permutes, shuffle, and random genetic codes, calculate the mean square differences (MSm and MSf) for real or fake AA properties upon mismatching/frameshifting, the Pearson correlation coefficients between MSm and MSf, and the probability of mismatch/frameshift optimality (Pm and Pf) of the standard genetic code (SGC).
 
-***AAindexRandomCodesFrameshiftCorrelation123.java*** Computational analysis of the AA properties in Random genetic codes (RGCs) ; 
-***AAindexAlternativeCodesFrameshiftCorrelation123.java*** Computational analysis of the AA properties in alternative genetic codes (AGCs);
-The programs read AA properties data in ./Matrix/aaindex1.txt (from the AAindex database) ;
+Usage: java -cp ./ MsGeneticCode <D> <C> <R> <W> <S> <E>
 
-(2) To analysis Pseudo AAindex in normal distribution, use the following two programs:
+         <D> Distribution (1 = Real; 2 = Uniform; 3 = Normal):
 
-***PseudoAAindexRandomCodesFrameshiftCorrelation123.java*** Computational analysis of the Pseudo AA properties in alternative genetic codes (AGCs) ;
-***PseudoAAindexAlternativeCodesFrameshiftCorrelation123.java*** Computational analysis of the Pseudo AA properties in Random genetic codes (RGCs) ;  
+         <C> Number of random codes: (100~1,000,000);
 
-The programs read AA properties data in ./Matrix/FakeAAindex.txt (from the AAindex database) ;
-To analysis Pseudo AAindex in normal distribution, copy ./Matrix/normalFakeAAindex.txt to ./Matrix/FakeAAindex.txt;
-To analysis Pseudo AAindex in uniform distribution, copy ./Matrix/uniformFakeAAindex.txt to ./Matrix/FakeAAindex.txt;
+         <R> Number of repeats: (1~1,000);
 
-MSm and MSf are the mismatch and frameshift MS of a genetic code, respectively. As -1 and +1 frameshift MS are equal, only +1 frameshift MS was considered. For each AA property, we calculated: (1) the MSm and MSf values for each genetic code; (2) the Pearson's correlation coefficient (R) between the MSm and MSf of RGCs or AGCs; (3) the probability of the SGC's mismatch (Pm) or frameshift (Pf) optimality. 
+         <W> Number of amino acid swaps for each random codes(1~1000);
 
-####Please cite the following articles if you use these programs:
+         <S> the Start number of AA property: (1~599);
 
-[1] Wang X, Wang X, Chen G, Zhang J, Liu Y, Yang C. 2015. The shiftability of protein-coding genes: the genetic code was optimized for frameshift tolerating. PeerJ PrePrints 3:e806v1 https://doi.org/10.7287/peerj.preprints.806v1
+         <E> the ending number of AA property: (1~599);
 
-[2] X. Wang et al., Frameshifts and wild-type protein sequences are highly similar because the genetic code and genomes were optimized for frameshift tolerance. bioRxiv 067736; doi: https://doi.org/10.1101/067736
+         D=1: Real AA properties 
 
-[3] Freeland, S.J. and L.D. Hurst. The genetic code is one in a million. J Mol Evol, 1998. 47(3): p. 238-48.
+         D=2: Fake AA properties simulated by random numbers with uniform distribution.
 
-[4] Itzkovitz, S. and U. Alon. The genetic code is nearly optimal for allowing additional information within protein-coding sequences. Genome Res, 2007. 17(4): p. 405-12.
+         D=3: Fake AA properties simulated by random numbers with normal distribution.
 
+First, compile the java program:
+
+javac -cp ./ MsGeneticCode.java
+
+Then, use the following commands to analysis AA properties:
+         
+nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode real 1000000 1 1 1 564 &
+nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode uniform 1000000 1 1 1 564 &
+nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode normal 1000000 1 1 1 564 &
+
+For each AA property, we calculated: 
+(1) the MSm and MSf values for each genetic code;
+(2) the Pearson's correlation coefficient (R) between the MSm and MSf ; 
+(3) the probability of the SGC's mismatch (Pm) or frameshift (Pf) optimality. 
+
+Notes:
+(1) The real AA property data are derived from the AAindex database 
+          The real AA property data are available at the AAindex database (https://www.genome.jp/aaindex/).
+          The real AA property data are saved in file ./Matrix/AAindex1.txt
+          The real AA property data are read by the AAindex.java
+          The fake AA property data are simulated by random numbers with uniform or normal distribution.
+          
+(2) MSm and MSf are the mismatch and frameshift MS of a genetic code, respectively. 
+          As -1 and +1 frameshift MS are identical, only +1 frameshift MS is considered. 
+          
+(3) For each AA property:
+         Pm/Pf is the probability of mismatch/frameshift optimality of the SGC; 
+         Pm/Pf is given by the fraction of codes with MSm/MSf values lower than that of the SGC. 
+          
+####This program requires multiple CPUs and large memory
+       This program is written in Java, accelerated by parallel computing, use as many CPUs as possible, and uses large memory (>100GB). 
+          
+       You may not use it in small computers with small memory, or it will take very long time.
+          
+####Please cite the following article if you use these programs:
+
+[1] X. Wang et al., Frameshift and wild-type proteins are often highly similar because the genetic code and genomes were optimized for frameshift tolerance. BMC Genomics 23, 416 (2022).
