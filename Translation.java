@@ -419,7 +419,6 @@ Written by:
 Xiaolong Wang* @ Ocean University of China 
 
 email: xiaolong@ouc.edu.cn
-website: http://www.dnapluspro.com
 ================================================================
 */
 
