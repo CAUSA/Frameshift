@@ -2,21 +2,22 @@
 
 #### 0	Computational analysis of AA properties
 
-    This program produces nt-permutes, aa-permutes, shuffle, and random genetic codes, calculate the mean square differences (MSm and MSf) for real or fake AA properties upon mismatching/frameshifting, the Pearson correlation coefficients between MSm and MSf, and the probability of mismatch/frameshift optimality (Pm and Pf) of the standard genetic code (SGC).
+This program produces nt-permutes, aa-permutes, shuffle, and random genetic codes, calculate the mean square differences (MSm and MSf) for real or fake AA properties upon mismatching/frameshifting, the Pearson correlation coefficients between MSm and MSf, and the probability of mismatch/frameshift optimality (Pm and Pf) of the standard genetic code (SGC).
 
-Usage: java -cp ./ MsGeneticCode <D> <C> <R> <W> <S> <E>
+Usage: 
+        java -cp ./ MsGeneticCode \<Distribution> \<nCodes> \<nRepeats> \<nSwaps> \<Start> \<End>
 
-         <D> Distribution (1 = Real; 2 = Uniform; 3 = Normal):
+         <Distribution> 1 = Real; 2 = Uniform; 3 = Normal;
 
-         <C> Number of random codes: (100~1,000,000);
+         <nCodes> Number of random codes: (100~1,000,000);
 
-         <R> Number of repeats: (1~1,000);
+         <nRepeats> Number of repeats: (1~1,000);
 
-         <W> Number of amino acid swaps for each random codes(1~1000);
+         <nSwaps> Number of amino acid swaps for each random codes(1~1000);
 
-         <S> the Start number of AA property: (1~599);
+         <Start> the Start number of AA property: (1~599);
 
-         <E> the ending number of AA property: (1~599);
+         <End> the ending number of AA property: (1~599);
 
          D=1: Real AA properties 
 
@@ -26,13 +27,13 @@ Usage: java -cp ./ MsGeneticCode <D> <C> <R> <W> <S> <E>
 
 First, compile the java program:
 
-javac -cp ./ MsGeneticCode.java
+        javac -cp ./ MsGeneticCode.java
 
 Then, use the following commands to analysis AA properties:
          
-nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode real 1000000 1 1 1 564 &
-nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode uniform 1000000 1 1 1 564 &
-nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode normal 1000000 1 1 1 564 &
+        nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode real 1000000 1 1 1 564 &
+        nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode uniform 1000000 1 1 1 564 &
+        nohup java -Xms256g -Xmx256g -cp ./ MsGeneticCode normal 1000000 1 1 1 564 &
 
 For each AA property, we calculated: 
 (1) the MSm and MSf values for each genetic code;
@@ -41,22 +42,21 @@ For each AA property, we calculated:
 
 Notes:
 (1) The real AA property data are derived from the AAindex database 
-          The real AA property data are available at the AAindex database (https://www.genome.jp/aaindex/).
-          The real AA property data are saved in file ./Matrix/AAindex1.txt
-          The real AA property data are read by the AAindex.java
-          The fake AA property data are simulated by random numbers with uniform or normal distribution.
+    The real AA property data are available at the AAindex database (https://www.genome.jp/aaindex/).
+    The real AA property data are saved in file ./Matrix/AAindex1.txt
+    The real AA property data are read by the AAindex.java
+    The fake AA property data are simulated by random numbers with uniform or normal distribution.
           
 (2) MSm and MSf are the mismatch and frameshift MS of a genetic code, respectively. 
-          As -1 and +1 frameshift MS are identical, only +1 frameshift MS is considered. 
+   As -1 and +1 frameshift MS are identical, only +1 frameshift MS is considered. 
           
 (3) For each AA property:
-         Pm/Pf is the probability of mismatch/frameshift optimality of the SGC; 
-         Pm/Pf is given by the fraction of codes with MSm/MSf values lower than that of the SGC. 
+    Pm/Pf is the probability of mismatch/frameshift optimality of the SGC; 
+    Pm/Pf is given by the fraction of codes with MSm/MSf values lower than that of the SGC. 
           
 *** This program requires multiple CPUs and large memory ***
-       This program is written in Java, accelerated by parallel computing, use as many CPUs as possible, and uses large memory (>100GB). 
-          
-       You may not use it in small computers with small memory, or it will take very long time.
+    This program is written in Java, accelerated by parallel computing, use as many CPUs as possible, and uses large memory (>100GB). 
+    You may not use it in small computers with small memory, or it will take very long time.
 
 #### 1	Simulation and translation of coding sequences (CDSs) 
 
